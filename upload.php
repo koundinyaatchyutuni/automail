@@ -1,17 +1,24 @@
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Handle uploaded Excel file
-    if ($_FILES["excelFile"]["error"] == UPLOAD_ERR_OK) {
-        $excelFilePath = "uploads/" . $_FILES["excelFile"]["name"];
-        move_uploaded_file($_FILES["excelFile"]["tmp_name"], $excelFilePath);
-        echo "Excel file uploaded successfully.<br>";
+    $targetDirectory = "C:/Users/MY PC/OneDrive/Desktop/email/uploads/"; 
+    $targetFile = $targetDirectory . basename($_FILES["excelFile"]["name"]);
+    $uploadOk = 1;
+    $fileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
+
+    // Check if file is an Excel file
+    if ($fileType != "xlsx" && $fileType != "xls") {
+        echo "Only Excel files are allowed.";
+        $uploadOk = 0;
     }
 
-    // Handle uploaded CSS file
-    if ($_FILES["cssFile"]["error"] == UPLOAD_ERR_OK) {
-        $cssFilePath = "uploads/" . $_FILES["cssFile"]["name"];
-        move_uploaded_file($_FILES["cssFile"]["tmp_name"], $cssFilePath);
-        echo "CSS file uploaded successfully.<br>";
+    if ($uploadOk == 0) {
+        echo "File was not uploaded.";
+    } else {
+        if (move_uploaded_file($_FILES["excelFile"]["tmp_name"], $targetFile)) {
+            echo "File " . basename($_FILES["excelFile"]["name"]) . " has been uploaded.";
+        } else {
+            echo "There was an error uploading the file.";
+        }
     }
 }
 ?>
