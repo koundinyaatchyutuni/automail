@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload and Process Excel</title>
+</head>
+<body>
+    <h1>Upload an Excel file</h1>
+    <form id="upload-form" enctype="multipart/form-data">
+        <input type="file" name="excel-file" id="excel-file" accept=".xlsx, .xls">
+        <button type="submit">Upload and Process</button>
+    </form>
+
+    <div id="response"></div>
+
+    <script>
+        document.getElementById('upload-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            // Create a FormData object to send the file to the server
+            var formData = new FormData();
+            formData.append('excel-file', document.getElementById('excel-file').files[0]);
+
+            // Create and configure the XMLHttpRequest object
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/process', true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        document.getElementById('response').textContent = xhr.responseText;
+                    } else {
+                        document.getElementById('response').textContent = 'Error processing file.';
+                    }
+                }
+            };
+
+            // Send the FormData to the server
+            xhr.send(formData);
+        });
+    </script>
+</body>
+</html>
