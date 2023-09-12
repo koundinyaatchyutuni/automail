@@ -1,9 +1,12 @@
 import openpyxl
 from openpyxl import load_workbook
 from Crypto.Cipher import AES
+#create a key
 key = b'candyisagoodboyy'
+#encrypt with cipher
 cipher = AES.new(key, AES.MODE_EAX)
 data = "Welcome to copyassignment.com!".encode()
+#create a nonce
 nonce = cipher.nonce
 # encrypt the data
 ciphertext = cipher.encrypt(data)
@@ -11,8 +14,7 @@ da=str(ciphertext,encoding='latin-1')
 # print the encrypted data
 print("Cipher text:", ciphertext)
 cipher = AES.new(key, AES.MODE_EAX, nonce=nonce)
-# d=cipher.decrypt(ciphertext)
-# print(d)
+#load excel file
 wb=load_workbook(filename='testset.xlsx')
 s=wb.active
 for a in range(2,5):
